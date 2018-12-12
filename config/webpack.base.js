@@ -3,10 +3,7 @@ const extractTextPlugin = require('extract-text-webpack-plugin')
 const htmlPlugin = require('html-webpack-plugin')
 
 let cssloader = [{
-    loader: require.resolve('css-loader'),
-    options: {
-        importLoaders: 1,
-    },
+    loader: require.resolve('css-loader')
 }, {
     loader: require.resolve('postcss-loader'),
     options: {
@@ -29,7 +26,7 @@ let cssloader = [{
 module.exports = {
     mode: process.env.NODE_ENV,
     entry: {
-        app: "./src/index.jsx"
+        app: "./src/index.ts"
     },
     output: {
         path: path.resolve(__dirname, '../build'),
@@ -46,10 +43,7 @@ module.exports = {
         rules: [{
                 test: /\.(js|jsx)$/,
                 use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ['env', { modules: false }]
-                    }
+                    loader: "babel-loader"
                 },
                 exclude: "/node_modules/"
             },
