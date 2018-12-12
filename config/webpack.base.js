@@ -1,9 +1,6 @@
 const path = require('path')
 const extractTextPlugin = require('extract-text-webpack-plugin')
-
-let website = {
-    publicPath: "http://localhost:3000"
-}
+const htmlPlugin = require('html-webpack-plugin')
 
 let cssloader = [{
     loader: require.resolve('css-loader'),
@@ -32,12 +29,12 @@ let cssloader = [{
 module.exports = {
     mode: process.env.NODE_ENV,
     entry: {
-        app: "./src/app.ts"
+        app: "./src/index.jsx"
     },
     output: {
         path: path.resolve(__dirname, '../build'),
         filename: "js/[name].[hash:5].js",
-        publicPath: website.publicPath
+        publicPath: ''
     },
     resolve: {
         extensions: ['.js', '.jsx', 'tsx', 'ts'],
@@ -49,7 +46,10 @@ module.exports = {
         rules: [{
                 test: /\.(js|jsx)$/,
                 use: {
-                    loader: "babel-loader"
+                    loader: "babel-loader",
+                    options: {
+                        presets: ['env', { modules: false }]
+                    }
                 },
                 exclude: "/node_modules/"
             },
@@ -67,7 +67,7 @@ module.exports = {
                 test: /\.css$/,
                 use: extractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: [...cssloader]
+                    use: [ "style-loader",...cssloader]
                 })
             },
             {
@@ -97,5 +97,12 @@ module.exports = {
     },
     plugins: [
         new extractTextPlugin("css/style.css"),
+        new htmlPlugin({
+            minify: { //对html进行压缩
+                removeAttributeQuotes: true //去掉属性的双引号
+            },
+            hash: true, //为了开发中js有缓存效果，所以加入hash，这样可以有效避免缓存js
+            template: "./public/index.html"
+        }),
     ]
 }

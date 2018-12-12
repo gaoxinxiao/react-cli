@@ -2,19 +2,19 @@ const path = require('path')
 const baseConfig = require('./webpack.base')
 const webpack = require('webpack')
 const DefinePlugin = webpack.DefinePlugin
-const htmlPlugin = require('html-webpack-plugin')
+
+let website = {
+    publicPath: "http://localhost:3000"
+}
 
 baseConfig.plugins.push(
     new DefinePlugin({
         'process.env': '"development"'
     }),
-    new htmlPlugin({
-        minify: { //对html进行压缩
-            removeAttributeQuotes: true //去掉属性的双引号
-        },
-        hash: true, //为了开发中js有缓存效果，所以加入hash，这样可以有效避免缓存js
-        template: "./public/index.html"
-    }), new webpack.HotModuleReplacementPlugin(),new webpack.NamedChunksPlugin())
+    // new webpack.HotModuleReplacementPlugin(),
+    // new webpack.NamedChunksPlugin()
+)
+baseConfig.output.publicPath = website.publicPath
 
 module.exports = {
     ...baseConfig,
@@ -30,9 +30,9 @@ module.exports = {
             warnings: true,
             errors: true
         },
-        hot: true,
-        hotOnly:true,
-        inline:true,
+        // hot: true,
+        // hotOnly: true,
+        inline: true,
         proxy: {}
     },
     devtool: 'eval-source-map'

@@ -2,6 +2,5 @@ body{
     height: 100px;
     display: flex;
     border-radius: 50%;
-    background: blue;
-    
+    background: red; 
 }
