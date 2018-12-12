@@ -32,7 +32,7 @@ module.exports = {
         },
         // hot: true,
         // hotOnly: true,
-        // inline: true,
+        inline: true,
         proxy: {}
     },
     devtool: 'eval-source-map'
