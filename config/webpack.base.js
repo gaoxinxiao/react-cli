@@ -26,7 +26,7 @@ let cssloader = [{
 module.exports = {
     mode: process.env.NODE_ENV,
     entry: {
-        app: "./src/index.ts"
+        app: "./src/index.js"
     },
     output: {
         path: path.resolve(__dirname, '../build'),
@@ -43,9 +43,9 @@ module.exports = {
         rules: [{
                 test: /\.(js|jsx)$/,
                 use: {
-                    loader: "babel-loader"
+                    loader: "babel-loader",
                 },
-                exclude: "/node_modules/"
+                exclude: '/node_modules/'
             },
             {
                 test: /\.(ts|tsx)$/,
@@ -54,14 +54,10 @@ module.exports = {
                 }
             },
             {
-                test: /\.(htm|html)$/i,
-                use: ['html-withimg-loader']
-            },
-            {
                 test: /\.css$/,
                 use: extractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: [ "style-loader",...cssloader]
+                    use: [...cssloader]
                 })
             },
             {
@@ -90,13 +86,15 @@ module.exports = {
         ]
     },
     plugins: [
-        new extractTextPlugin("css/style.css"),
         new htmlPlugin({
             minify: { //对html进行压缩
-                removeAttributeQuotes: true //去掉属性的双引号
+                removeAttributeQuotes: true, //去掉属性的双引号
+                collapseWhitespace: true, //删除空白符与换行符
+                removeComments: true, //移除HTML中的注释
             },
             hash: true, //为了开发中js有缓存效果，所以加入hash，这样可以有效避免缓存js
             template: "./public/index.html"
         }),
+        new extractTextPlugin("css/style.css"),
     ]
 }
