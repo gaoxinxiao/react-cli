@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
-    "dev": "webpack-dev-server --config webpack.config.js"
+    "start":"npm run dev",
+    "build": "cross-env NODE_ENV=production webpack --progress --color --profile --config config/webpack.build.js",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --progress --color --config config/webpack.dev.js"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
     "less-loader": "^4.1.0",
     "node-sass": "^4.10.0",
     "postcss": "^7.0.6",
+    "postcss-flexbugs-fixes": "^4.1.0",
     "postcss-loader": "^3.0.0",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",

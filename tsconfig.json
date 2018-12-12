@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",//module以commonjs的规范
+        "target": "es5",//以2015低版本的方式编译
+        "allowJs":true,//是否允许js的语法
+        "typeRoots":[
+            "./node_modules/@type",
+            "./typings/modules"
+        ]
+    },
+    "include":[
+        "./src/*"
+    ],
+    "exclude":[
+        "./node_modules"
+    ]   
+}  

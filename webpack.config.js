@@ -5,26 +5,39 @@ const extractTextPlugin = require('extract-text-webpack-plugin')
 const glob = require('glob');
 const PurifyCSSPlugin = require("purifycss-webpack");
 
-var website = {
-    publicPath: "http://localhost:3000"
-}
-
+// let cssloader ={
+//     loader: require.resolve('postcss-loader'),
+//     options: {
+//         ident: 'postcss',
+//         plugins: () => [
+//             require('postcss-flexbugs-fixes'),
+//             require('autoprefixer')({
+//                 browsers: [
+//                     '>1%',
+//                     'last 4 versions',
+//                     'Firefox ESR',
+//                     'not ie < 9', // React doesn't support IE8 anyway
+//                 ],
+//                 flexbox: 'no-2009',
+//             }),
+//         ],
+//     },
+// },
 
 module.exports = {
-    mode: "development",
     entry: {
-        app: "./src/app.js"
+        app: "./src/app.ts"
     },
     devtool: 'eval-source-map',
     output: {
-        path: path.resolve(__dirname, './build'),
+        path: path.resolve(__dirname, '../build'),
         filename: "js/[name].[hash:5].js",
         publicPath: website.publicPath
     },
     resolve: {
         extensions: ['.js', '.jsx', 'tsx', 'ts'],
         alias: {
-            "@": path.join(__dirname, './src')
+            "@": path.join(__dirname, '../src')
         }
     },
     module: {
@@ -36,6 +49,12 @@ module.exports = {
                 exclude: "/node_modules/"
             },
             {
+                test: /\.(ts|tsx)$/,
+                use: {
+                    loader: require.resolve('awesome-typescript-loader')
+                }
+            },
+            {
                 test: /\.(htm|html)$/i,
                 use: ['html-withimg-loader']
             },
@@ -44,14 +63,51 @@ module.exports = {
                 use: extractTextPlugin.extract({
                     fallback: "style-loader",
                     use: [
-                         "css-loader",'postcss-loader'
+                        "css-loader",
+                        {
+                            loader: require.resolve('postcss-loader'),
+                            options: {
+                                ident: 'postcss',
+                                plugins: () => [
+                                    require('postcss-flexbugs-fixes'),
+                                    require('autoprefixer')({
+                                        browsers: [
+                                            '>1%',
+                                            'last 4 versions',
+                                            'Firefox ESR',
+                                            'not ie < 9', // React doesn't support IE8 anyway
+                                        ],
+                                        flexbox: 'no-2009',
+                                    }),
+                                ],
+                            },
+                        },
                     ]
                 })
             },
             {
                 test: /\.less$/,
                 use: extractTextPlugin.extract({
-                    use: ["css-loader", "less-loader"],
+                    use: ["css-loader", "less-loader",
+                        {
+                            loader: require.resolve('postcss-loader'),
+                            options: {
+                                ident: 'postcss',
+                                plugins: () => [
+                                    require('postcss-flexbugs-fixes'),
+                                    require('autoprefixer')({
+                                        browsers: [
+                                            '>1%',
+                                            'last 4 versions',
+                                            'Firefox ESR',
+                                            'not ie < 9', // React doesn't support IE8 anyway
+                                        ],
+                                        flexbox: 'no-2009',
+                                    }),
+                                ],
+                            },
+                        },
+                    ],
                     fallback: "style-loader",
                 })
             },
@@ -59,14 +115,32 @@ module.exports = {
                 test: /\.scss$/,
                 use: extractTextPlugin.extract({
                     use: [{
-                        loader: "css-loader"
-                    }, {
-                        loader: "sass-loader"
-                    }],
+                            loader: "css-loader"
+                        }, {
+                            loader: "sass-loader"
+                        },
+                        {
+                            loader: require.resolve('postcss-loader'),
+                            options: {
+                                ident: 'postcss',
+                                plugins: () => [
+                                    require('postcss-flexbugs-fixes'),
+                                    require('autoprefixer')({
+                                        browsers: [
+                                            '>1%',
+                                            'last 4 versions',
+                                            'Firefox ESR',
+                                            'not ie < 9', // React doesn't support IE8 anyway
+                                        ],
+                                        flexbox: 'no-2009',
+                                    }),
+                                ],
+                            },
+                        },
+                    ],
                     fallback: "style-loader",
                 })
-            },
-            {
+            }, {
                 test: /\.(png|jpg|gif|jpe?g)$/,
                 use: [{
                     loader: "url-loader",
@@ -95,7 +169,7 @@ module.exports = {
     ],
     devServer: {
         //设置目录基本结构
-        contentBase: path.resolve(__dirname, './dist'),
+        contentBase: path.resolve(__dirname, '../dist'),
         host: "localhost",
         //服务端压缩是否开始
         compress: true,
