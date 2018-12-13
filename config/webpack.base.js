@@ -24,9 +24,8 @@ let cssloader = [{
 }]
 
 module.exports = {
-    mode: process.env.NODE_ENV,
     entry: {
-        app: "./src/index.ts"
+        app: "./src/index.js"
     },
     output: {
         path: path.resolve(__dirname, '../build'),
@@ -54,14 +53,10 @@ module.exports = {
                 }
             },
             {
-                test: /\.(htm|html)$/i,
-                use: ['html-withimg-loader']
-            },
-            {
                 test: /\.css$/,
                 use: extractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: [ "style-loader",...cssloader]
+                    use: [...cssloader]
                 })
             },
             {
@@ -78,7 +73,7 @@ module.exports = {
                     use: ["sass-loader", ...cssloader],
                 })
             }, {
-                test: /\.(png|jpg|gif|jpe?g)$/,
+                test: /\.(png|jpg|gif|jpe?g|woff|svg|eot|ttf)$/,
                 use: [{
                     loader: "url-loader",
                     options: {

@@ -6,7 +6,26 @@ const DefinePlugin = webpack.DefinePlugin
 let website = {
     publicPath: "http://localhost:3000"
 }
-
+let cssloader = [{
+    loader: require.resolve('css-loader')
+}, {
+    loader: require.resolve('postcss-loader'),
+    options: {
+        ident: 'postcss',
+        plugins: () => [
+            require('postcss-flexbugs-fixes'),
+            require('autoprefixer')({
+                browsers: [
+                    '>1%',
+                    'last 4 versions',
+                    'Firefox ESR',
+                    'not ie < 9', // React doesn't support IE8 anyway
+                ],
+                flexbox: 'no-2009',
+            }),
+        ],
+    },
+}]
 baseConfig.plugins.push(
     new DefinePlugin({
         'process.env': '"development"'
@@ -16,11 +35,15 @@ baseConfig.plugins.push(
 )
 baseConfig.output.publicPath = website.publicPath
 
+
+
 module.exports = {
     ...baseConfig,
     devServer: {
         //设置目录基本结构
-        contentBase: path.resolve(__dirname, '../dist'),
+        contentBase: path.resolve(__dirname, '../build'),
+        historyApiFallback:true,
+        noInfo:true,
         host: "localhost",
         //服务端压缩是否开始
         compress: true,
@@ -32,8 +55,8 @@ module.exports = {
         },
         // hot: true,
         // hotOnly: true,
-        inline: true,
-        proxy: {}
+        // inline: true,
+        proxy: {},
     },
     devtool: 'eval-source-map'
 }
