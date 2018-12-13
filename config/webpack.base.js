@@ -1,6 +1,11 @@
 const path = require('path')
 const extractTextPlugin = require('extract-text-webpack-plugin')
 const htmlPlugin = require('html-webpack-plugin')
+const Chalk = require('chalk')
+
+let website = {
+    publicPath:process.env.ENV_MODE == 'dev' ? '/' : "."
+}
 
 let cssloader = [{
     loader: require.resolve('css-loader')
@@ -23,17 +28,19 @@ let cssloader = [{
     },
 }]
 
+console.log(process.env.ENV_MODE == 'dev'  ? Chalk.green('------开发环境... localhost:3000') : Chalk.blue('------打包环境...------') )
+
 module.exports = {
     entry: {
-        app: "./src/index.js"
+        app: "./src/index.tsx"
     },
     output: {
         path: path.resolve(__dirname, '../build'),
         filename: "js/[name].[hash:5].js",
-        publicPath: ''
+        publicPath: website.publicPath
     },
     resolve: {
-        extensions: ['.js', '.jsx', 'tsx', 'ts'],
+        extensions: ['.js', '.jsx', '.tsx', '.ts'],
         alias: {
             "@": path.join(__dirname, '../src')
         }
@@ -48,9 +55,8 @@ module.exports = {
             },
             {
                 test: /\.(ts|tsx)$/,
-                use: {
-                    loader: require.resolve('awesome-typescript-loader')
-                }
+                loader: 'awesome-typescript-loader',
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,

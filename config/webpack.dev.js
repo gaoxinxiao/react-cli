@@ -2,12 +2,9 @@ const path = require('path')
 const baseConfig = require('./webpack.base')
 const webpack = require('webpack')
 const DefinePlugin = webpack.DefinePlugin
-const Chalk = require('chalk')
+// const Chalk = require('chalk')
 const WebpackDevServer = require('webpack-dev-server')
 
-let website = {
-    publicPath: "http://localhost:3000"
-}
 let cssloader = [{
     loader: require.resolve('css-loader')
 }, {
@@ -34,12 +31,6 @@ baseConfig.plugins.push(
     }),
     // new webpack.HotModuleReplacementPlugin(),
     // new webpack.NamedChunksPlugin()
-)
-baseConfig.output.publicPath = website.publicPath
-
-
-console.log(
-    Chalk.blue('123')
 )
 
 module.exports = {

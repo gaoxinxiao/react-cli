@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run dev",
-    "build": "webpack --mode production --progress --color --profile --config config/webpack.build.js",
-    "dev": "webpack-dev-server --mode development --config config/webpack.dev.js"
+    "build": "env ENV_MODE=pro webpack --mode production --progress --color --profile --config config/webpack.build.js",
+    "dev": "env ENV_MODE=dev webpack-dev-server --mode development --config config/webpack.dev.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,8 @@
     "@babel/core": "^7.1.6",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "@types/react": "^16.7.17",
+    "@types/react-dom": "^16.0.11",
     "autoprefixer": "^9.3.1",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.0-beta.0",

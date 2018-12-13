@@ -6,9 +6,7 @@ const PurifyCSSPlugin = require("purifycss-webpack");
 const webpack = require('webpack')
 const DefinePlugin = webpack.DefinePlugin
 
-let website = {
-    publicPath: "."
-}
+
 
 baseConfig.plugins.push(
     new DefinePlugin({
@@ -20,7 +18,6 @@ baseConfig.plugins.push(
         paths: glob.sync(path.join(__dirname, 'src/*.html')),
     })
 )
-baseConfig.output.publicPath = website.publicPath
 module.exports = {
     ...baseConfig
 }
