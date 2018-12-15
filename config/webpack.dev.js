@@ -5,26 +5,6 @@ const DefinePlugin = webpack.DefinePlugin
 // const Chalk = require('chalk')
 const WebpackDevServer = require('webpack-dev-server')
 
-let cssloader = [{
-    loader: require.resolve('css-loader')
-}, {
-    loader: require.resolve('postcss-loader'),
-    options: {
-        ident: 'postcss',
-        plugins: () => [
-            require('postcss-flexbugs-fixes'),
-            require('autoprefixer')({
-                browsers: [
-                    '>1%',
-                    'last 4 versions',
-                    'Firefox ESR',
-                    'not ie < 9', // React doesn't support IE8 anyway
-                ],
-                flexbox: 'no-2009',
-            }),
-        ],
-    },
-}]
 baseConfig.plugins.push(
     new DefinePlugin({
         'process.env': '"development"'
@@ -44,7 +24,7 @@ module.exports = {
         //服务端压缩是否开始
         compress: true,
         port: 3000,
-        // open: true,
+        open: true,
         overlay: {
             warnings: true,
             errors: true

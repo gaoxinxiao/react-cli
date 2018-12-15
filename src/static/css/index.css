@@ -1,6 +1,3 @@
-body{
-    height: 100px;
-    display: flex;
-    border-radius: 50%;
-    background: red; 
+.ant-form-explain{
+    color: red;
 }
