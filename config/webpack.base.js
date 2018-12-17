@@ -4,7 +4,7 @@ const htmlPlugin = require('html-webpack-plugin')
 const Chalk = require('chalk')
 
 let website = {
-    publicPath:process.env.ENV_MODE == 'dev' ? '/' : "."
+    publicPath: process.env.ENV_MODE == 'dev' ? '/' : "."
 }
 
 let cssloader = [{
@@ -28,10 +28,10 @@ let cssloader = [{
     },
 }]
 
-console.log(process.env.ENV_MODE == 'dev'  ? Chalk.green('------开发环境... localhost:3000') : Chalk.blue('------打包环境...------') )
+console.log(process.env.ENV_MODE == 'dev' ? Chalk.green('------开发环境... localhost:3000') : Chalk.blue('------打包环境...------'))
 
 module.exports = {
-    entry:["babel-polyfill","./src/index.tsx"],
+    entry: ["babel-polyfill", "./src/index.tsx"],
     output: {
         path: path.resolve(__dirname, '../build'),
         filename: "js/[name].[hash:5].js",
@@ -40,7 +40,8 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx', '.tsx', '.ts'],
         alias: {
-            "@": path.join(__dirname, '../src')
+            "@": path.join(__dirname, '../src'),
+            "~": path.join(__dirname, '../node_modules'),
         }
     },
     module: {
@@ -87,6 +88,12 @@ module.exports = {
                 }]
             }
         ]
+    },
+    performance: {
+        hints: false
+    },
+    optimization: {
+        minimizer: []
     },
     plugins: [
         new extractTextPlugin("css/style.css"),

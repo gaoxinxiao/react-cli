@@ -1,3 +1,5 @@
-.ant-form-explain{
-    color: red;
+@import '~antd/dist/antd.min.css';
+
+body{
+    background: red;
 }

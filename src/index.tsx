@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import App from './app'
-import '../node_modules/antd/dist/antd.min.css'
+import './static/css/index.css'
 
 
 class Parent{
