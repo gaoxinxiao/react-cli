@@ -1,32 +1,10 @@
 const path = require('path')
-const extractTextPlugin = require('extract-text-webpack-plugin')
 const htmlPlugin = require('html-webpack-plugin')
 const Chalk = require('chalk')
 
 let website = {
     publicPath: process.env.ENV_MODE == 'dev' ? '/' : "."
 }
-
-let cssloader = [{
-    loader: require.resolve('css-loader')
-}, {
-    loader: require.resolve('postcss-loader'),
-    options: {
-        ident: 'postcss',
-        plugins: () => [
-            require('postcss-flexbugs-fixes'),
-            require('autoprefixer')({
-                browsers: [
-                    '>1%',
-                    'last 4 versions',
-                    'Firefox ESR',
-                    'not ie < 9', // React doesn't support IE8 anyway
-                ],
-                flexbox: 'no-2009',
-            }),
-        ],
-    },
-}]
 
 console.log(process.env.ENV_MODE == 'dev' ? Chalk.green('------开发环境... localhost:3000') : Chalk.blue('------打包环境...------'))
 
@@ -58,26 +36,6 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.css$/,
-                use: extractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: [...cssloader]
-                })
-            },
-            {
-                test: /\.less$/,
-                use: extractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: ["less-loader", ...cssloader],
-                })
-            },
-            {
-                test: /\.scss$/,
-                use: extractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: ["sass-loader", ...cssloader],
-                })
-            }, {
                 test: /\.(png|jpg|gif|jpe?g|woff|svg|eot|ttf)$/,
                 use: [{
                     loader: "url-loader",
@@ -96,7 +54,6 @@ module.exports = {
         minimizer: []
     },
     plugins: [
-        new extractTextPlugin("css/style.css"),
         new htmlPlugin({
             minify: { //对html进行压缩
                 removeAttributeQuotes: true //去掉属性的双引号
