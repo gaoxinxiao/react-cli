@@ -9,6 +9,7 @@
         "outDir": "dist",
         "sourceMap": true,
         "allowJs":true,//是否允许js的语法
+        "types":["node"],
         "typeRoots":[
             "./node_modules/@type",
         ]

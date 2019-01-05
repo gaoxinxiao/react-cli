@@ -1,17 +1,42 @@
 const path = require('path')
 const htmlPlugin = require('html-webpack-plugin')
 const Chalk = require('chalk')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+let publicFlag = process.env.ENV_MODE == 'dev'
 
 let website = {
-    publicPath: process.env.ENV_MODE == 'dev' ? '/' : "."
+    publicPath: publicFlag ? '/' : "."
 }
 
-console.log(process.env.ENV_MODE == 'dev' ? Chalk.green('------开发环境... localhost:3000') : Chalk.blue('------打包环境...------'))
+let cssloader = [{
+    loader: require.resolve('css-loader')
+}, {
+    loader: require.resolve('postcss-loader'),
+    options: {
+        ident: 'postcss',
+        plugins: () => [
+            require('postcss-flexbugs-fixes'), //修复flexbug问题
+            require('autoprefixer')({
+                browsers: [
+                    '>1%',
+                    'last 4 versions',
+                    'Firefox ESR',
+                    'not ie < 9', // React doesn't support IE8 anyway
+                ],
+                flexbox: 'no-2009',
+            }),
+        ],
+    },
+}]
+
+
+console.log(publicFlag ? Chalk.green('------开发环境... localhost:3000') : Chalk.blue('------打包环境...------'))
 
 module.exports = {
     entry: ["babel-polyfill", "./src/index.tsx"],
     output: {
-        path: path.resolve(__dirname, '../build'),
+        chunkFilename: '[name].bundle.js',
         filename: "js/[name].[hash:5].js",
         publicPath: website.publicPath
     },
@@ -36,6 +61,16 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                test: /\.css$/,
+                use: [publicFlag ? "style-loader" : MiniCssExtractPlugin.loader, ...cssloader]
+            }, {
+                test: /\.less$/,
+                use: [publicFlag ? "style-loader" : MiniCssExtractPlugin.loader, "less-loader", ...cssloader]
+            }, {
+                test: /\.scss$/,
+                use: [publicFlag ? "style-loader" : MiniCssExtractPlugin.loader, "sass-loader", ...cssloader]
+            },
+            {
                 test: /\.(png|jpg|gif|jpe?g|woff|svg|eot|ttf)$/,
                 use: [{
                     loader: "url-loader",
@@ -47,6 +82,7 @@ module.exports = {
             }
         ]
     },
+    //资源限制
     performance: {
         hints: false
     },
@@ -56,7 +92,8 @@ module.exports = {
     plugins: [
         new htmlPlugin({
             minify: { //对html进行压缩
-                removeAttributeQuotes: true //去掉属性的双引号
+                removeAttributeQuotes: true, //去掉属性的双引号
+                html5: true
             },
             hash: true, //为了开发中js有缓存效果，所以加入hash，这样可以有效避免缓存js
             template: "./public/index.html"
