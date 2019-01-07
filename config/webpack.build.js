@@ -27,8 +27,10 @@ baseConfig.plugins.push(
         allowExternal: true
     })
 )
-baseConfig.optimization.minimizer.push(new optimizeCss())
-baseConfig.optimization.minimizer.push(new uglifyjs())
+baseConfig.optimization.minimizer.push(
+    new uglifyjs(),
+    new optimizeCss()
+)
 module.exports = {
     ...baseConfig
 }

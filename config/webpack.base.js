@@ -34,7 +34,7 @@ let cssloader = [{
 console.log(publicFlag ? Chalk.green('------开发环境... localhost:3000') : Chalk.blue('------打包环境...------'))
 
 module.exports = {
-    entry: ["babel-polyfill", "./src/index.tsx"],
+    entry: "./src/index.tsx",
     output: {
         chunkFilename: '[name].bundle.js',
         filename: "js/[name].[hash:5].js",
@@ -62,6 +62,25 @@ module.exports = {
             },
             {
                 test: /\.css$/,
+                // use: [
+                //     MiniCssExtractPlugin.loader,
+                //     `css-loader?sourceMap=false&minimize=true`,
+                //     {
+                //         loader: 'postcss-loader', options: {
+                //             ident: 'postcss',
+                //             sourceMap: true,
+                //             plugins: (loader) => [
+                //                 require('autoprefixer')({
+                //                     browsers: [
+                //                         // 加这个后可以出现额外的兼容性前缀
+                //                         "> 0.01%"
+                //                     ]
+                //                 }),
+                //             ]
+                //         }
+                //     },
+                //     `less-loader?sourceMap=true&javascriptEnabled=true`
+                // ]
                 use: [publicFlag ? "style-loader" : MiniCssExtractPlugin.loader, ...cssloader]
             }, {
                 test: /\.less$/,
